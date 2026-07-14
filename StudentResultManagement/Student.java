@@ -1,3 +1,5 @@
+package StudentResultManagement;
+
 public class Student {
     private int rollNo;
     private String name;
@@ -8,7 +10,7 @@ public class Student {
 
     public Student(String name, int rollNo, int[] marks){
         this.name = name;
-        this.rollNo = rollNo;
+        this.rollNo = rollNo + 1;
         this.marks = marks.clone();
 
         calculateAll();
@@ -95,14 +97,54 @@ public void setMarks(int[] marks){
 
 
     //==============================================
-    //Calculators 
+    //Utilities 
     //==============================================
 
 
-    public boolean ispassed(){
+    public boolean isPassed(){
         if (percentage >= 50)
             return true;
         else
             return false;
     }
+
+    public void displayInfo() {
+
+        System.out.printf(
+            "| %-6d | %-20s | %-5d | %-5d | %-5d | %-5d | %-5d | %-5d | %-8.2f | %-5c |%n",
+            rollNo,
+            name,
+            marks[0],
+            marks[1],
+            marks[2],
+            marks[3],
+            marks[4],
+            total,
+            percentage,
+            grade
+        );
+    }
+    public void displayReport() {
+
+    System.out.println("\n========================================");
+    System.out.println("           STUDENT REPORT");
+    System.out.println("========================================");
+
+    System.out.println("Roll Number : " + rollNo);
+    System.out.println("Name        : " + name);
+
+    System.out.println("\n----------- Subject Marks -----------");
+
+    for (int i = 0; i < marks.length; i++) {
+        System.out.printf("Subject %-2d : %3d%n", (i + 1), marks[i]);
+    }
+
+    System.out.println("-------------------------------------");
+    System.out.println("Total        : " + total);
+    System.out.printf("Percentage   : %.2f%%%n", percentage);
+    System.out.println("Grade        : " + grade);
+    System.out.println("Result       : " + (isPassed() ? "PASS" : "FAIL"));
+
+    System.out.println("========================================");
+}
 }
