@@ -1,5 +1,4 @@
 import java.util.Scanner;
-import StudentResultManagement.StudentManagement;
 
 public class Project1 {
 
