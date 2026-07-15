@@ -66,6 +66,8 @@ public void setMarks(int[] marks){
     }
 
     private void calculateTotal(){
+        this.total = 0;
+        
         for (int i = 0; i < 5; i++){
             this.total += marks[i];
         }
@@ -73,7 +75,7 @@ public void setMarks(int[] marks){
 
     private void caluclatePercentage(){
 
-        this.percentage = total / 5;
+        this.percentage = (float) total * 100 / 500;
     }
 
     private void calculateGrade(){

@@ -3,12 +3,22 @@ import java.util.Scanner;
 public class StudentManagement {
     private Student[] students;
     private int studentCount;
-    private Scanner sc;
+    private final Scanner sc;
 
-    public StudentManagement(int capacity){
+    public StudentManagement(int capacity, Scanner sc){
         students = new Student[capacity];
-        sc = new Scanner(System.in);
+        this.sc = sc;
         studentCount = 0;
+    }
+
+    private int readInt() {
+        while (!sc.hasNextInt()) {
+            System.out.println("Please enter a valid integer.");
+            sc.next();
+        }
+        int value = sc.nextInt();
+        sc.nextLine();
+        return value;
     }
 
     public void start(){
@@ -19,8 +29,7 @@ public class StudentManagement {
         showMenu();
 
         System.out.print("Enter Your Choice : ");
-        choice = sc.nextInt();
-        sc.nextLine();
+        choice = readInt();
 
         switch (choice) {
 
@@ -59,17 +68,17 @@ public class StudentManagement {
                 classStatistics();
                 break;
 
-        //     case 9:
-        //         rankStudents();
-        //         break;
+            case 9:
+                rankStudents();
+                break;
 
-        //     case 10:
-        //         editStudent();
-        //         break;
+            case 10:
+                editStudent();
+                break;
 
-        //     case 11:
-        //         deleteStudent();
-        //         break;
+            case 11:
+                deleteStudent();
+                break;
 
             case 0:
                 System.out.println("\nThank You For Using Student Result Management System.");
@@ -123,9 +132,9 @@ public class StudentManagement {
         for (int i = 0; i < 5; i++){
             do{
                 System.out.println("Enter marks of subject " + (i+1) + " : ");
-                marks[i] = sc.nextInt(); 
+                marks[i] = readInt(); 
 
-            }while (marks[i]<0 && marks[i]>100);
+            }while (marks[i] < 0 || marks[i] > 100);
         }
 
         students[studentCount] = new Student(name, studentCount ++, marks);
@@ -133,10 +142,10 @@ public class StudentManagement {
         System.out.println("Student Added :)");
     }
 
-    public void displayStudents() {
+    private void displayStudents() {
 
         if (studentCount == 0) {
-            System.out.println("\nNo Students Found.");
+            System.out.println("\nNo Students Data Found.");
             return;
         }
 
@@ -158,16 +167,15 @@ public class StudentManagement {
         System.out.println(border);
     }
 
-
-    //==============================================
-    // Searches
-    //==============================================
-
     private void searchRoll(){
 
+         if (studentCount == 0) {
+            System.out.println("\nNo Students Data Found.");
+            return;
+        }
 
         System.out.println("Enter Roll no : ");
-        int roll = sc.nextInt();
+        int roll = readInt();
 
         for (int i = 0; i < studentCount; i++){
 
@@ -181,6 +189,11 @@ public class StudentManagement {
     }
 
     private void searchName(){
+
+        if (studentCount == 0) {
+            System.out.println("\nNo Students Data Found.");
+            return;
+        }
 
         System.out.println("Enter Name : ");
         String name = sc.nextLine();
@@ -200,8 +213,8 @@ public class StudentManagement {
 
     private void findTopper(){
 
-        if(studentCount == 0){
-            System.out.println("No Data Found !");
+        if (studentCount == 0) {
+            System.out.println("\nNo Students Data Found.");
             return;
         }
 
@@ -219,8 +232,8 @@ public class StudentManagement {
 
     private void findSubjectHigher(){
 
-        if(studentCount == 0){
-            System.out.println("No Data Found !");
+        if (studentCount == 0) {
+            System.out.println("\nNo Students Data Found.");
             return;
         }
 
@@ -243,8 +256,8 @@ public class StudentManagement {
 
     private void findSubjectLower(){
 
-        if(studentCount == 0){
-            System.out.println("No Data Found !");
+        if (studentCount == 0) {
+            System.out.println("\nNo Students Data Found.");
             return;
         }
 
@@ -266,6 +279,11 @@ public class StudentManagement {
     }
 
     private void classStatistics(){
+
+        if (studentCount == 0) {
+            System.out.println("\nNo Students Data Found.");
+            return;
+        }
 
         int passed = 0, failed = 0, total = 0, highestIndex = 0, lowestIndex = 0;
         int gradeA = 0, gradeB = 0, gradeC = 0, gradeD = 0, gradeE = 0, gradeF = 0;
@@ -322,7 +340,7 @@ public class StudentManagement {
                 
         }
 
-        int classAverage = total / 5 ;
+        float classAverage = (float) total * 100 / (studentCount * 500) ;
         float highestPercentage = students[highestIndex].getPercentage();
         float lowestPercentage = students[lowestIndex].getPercentage();
         String topperName = students[highestIndex].getName(), lowestName = students[lowestIndex].getName();
@@ -373,5 +391,204 @@ public class StudentManagement {
         System.out.printf("Grade F : %d%n", gradeF);
 
         System.out.println("=================================================");
+    }
+
+    private void rankStudents(){
+        if (studentCount == 0) {
+            System.out.println("\nNo Students Data Found.");
+            return;
+        }
+
+        Student[] rankedStudents = new Student[studentCount];
+
+        rankedStudents = students.clone();
+
+        for (int i =0; i < studentCount - 1; i++){
+
+            for (int j = 0; j < studentCount - i - 1; j++){
+
+                if (rankedStudents[j].getTotal() < rankedStudents[j + 1].getTotal()){
+                    Student temp = rankedStudents[j];
+                    rankedStudents[j] = rankedStudents[j+1];
+                    rankedStudents[j+1] = temp;
+                }
+            }
+
+        }
+
+        String border =
+        "+--------+----------------------+-------+-------+-------+-------+-------+-------+----------+-------+";
+
+        System.out.println(border);
+
+        System.out.printf(
+        "| %-6s | %-20s | %-5s | %-5s | %-5s | %-5s | %-5s | %-5s | %-8s | %-5s |%n",
+        "Roll","Name","S1","S2","S3","S4","S5","Total","Percent","Grade");
+
+        System.out.println(border);
+
+        for(int i = 0; i < studentCount; i++){
+            rankedStudents[i].displayInfo();
+        }
+
+        System.out.println(border);
+    }
+
+    private void editStudent(){
+
+        if (studentCount == 0) {
+            System.out.println("\nNo Students Data Found.");
+            return;
+        }
+
+        System.out.println("==========================================");
+        System.out.println("         EDIT STUDENT");
+        System.out.println("==========================================");
+
+        System.out.println("Enter Roll Number : ");
+        int roll = readInt();
+
+        int index = -1;
+
+        for (int i = 0; i < studentCount; i++){
+            if (students[i].getRoll() == roll){
+                index = i;
+                break;
+            }
+        }
+
+        if (index == -1){
+            System.out.println("Student having roll no : " + roll + " don't exists!");
+            return;
+        }
+
+        students[index].displayReport();
+
+        System.out.println("\n==========================================");
+        System.out.println("What would you like to edit?");
+        System.out.println("==========================================");
+        System.out.println("1. Student Name");
+        System.out.println("2. Subject Marks");
+        System.out.println("3. Both Name & Marks");
+        System.out.println("0. Cancel");
+
+        System.out.print("\nEnter Choice : ");
+        int choice = readInt();
+        sc.nextLine();
+
+        switch (choice) {
+
+            case 1:
+                System.out.print("\nEnter New Name : ");
+                String newName = sc.nextLine();
+
+                students[index].setName(newName);
+
+                System.out.println("\n✓ Name Updated Successfully.");
+                break;
+
+            case 2:
+                System.out.println("\nEnter New Marks");
+
+                int[] newMarks = inputMarks();
+
+                students[index].setMarks(newMarks);
+
+                System.out.println("\n✓ Marks Updated Successfully.");
+                break;
+
+            case 3:
+                System.out.print("\nEnter New Name : ");
+                String updatedName = sc.nextLine();
+
+                students[index].setName(updatedName);
+
+                System.out.println("\nEnter New Marks");
+
+                int[] updatedMarks = inputMarks();
+
+                students[index].setMarks(updatedMarks);
+
+                System.out.println("\n✓ Student Record Updated Successfully.");
+                break;
+
+            case 0:
+                System.out.println("\nEdit Cancelled.");
+                return;
+
+            default:
+                System.out.println("\nInvalid Choice.");
+                return;
+        }
+
+        System.out.println("\n==========================================");
+        System.out.println("UPDATED STUDENT DETAILS");
+        System.out.println("==========================================");  
+
+        students[index].displayReport();
+
+    }
+    
+    private void deleteStudent(){
+        if (studentCount == 0) {
+            System.out.println("\nNo Students Data Found.");
+            return;
+        }
+
+        System.out.println("Enter Roll no of Student to delete");
+        int roll = readInt();
+
+        sc.nextLine();
+
+        int index = -1;
+
+        for(int i = 0; i < studentCount; i++){
+            if (students[i].getRoll() == roll){
+                index = i;
+                break;
+            }
+        }
+
+        if (index == -1){
+            System.out.println("Student having roll no : " + roll + " don't exists!");
+            return;
+        }
+
+        String name = students[index].getName();
+
+        for (int i = index; i < studentCount-1; i++){
+            students[i] = students[i+1];
+        }
+
+        students[studentCount - 1] = null;
+
+        studentCount--;
+
+        System.out.println("Student " + name + " is been deleted !");
+    }
+
+    private int[] inputMarks() {
+
+        int[] marks = new int[5];
+
+        System.out.println("\nEnter Marks of 5 Subjects");
+
+        for (int i = 0; i < 5; i++) {
+
+            do {
+
+                System.out.print("Subject " + (i + 1) + " : ");
+                int mark = readInt();
+
+                marks[i] = mark;
+
+            }while (marks[i] < 0 || marks[i] > 100);
+
+        }
+
+        sc.nextLine(); // Clear buffer
+
+        return marks;
+
     }
 }

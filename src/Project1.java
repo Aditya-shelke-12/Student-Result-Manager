@@ -12,8 +12,9 @@ public class Project1 {
 
         System.out.print("Enter Maximum Number Of Students : ");
         int capacity = sc.nextInt();
+        sc.nextLine();
 
-        StudentManagement sms = new StudentManagement(capacity);
+        StudentManagement sms = new StudentManagement(capacity, sc);
 
         sms.start();
 
