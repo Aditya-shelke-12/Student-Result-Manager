@@ -142,16 +142,11 @@ Handles:
 
 # 📸 Screenshots
 
-> Add screenshots after running the application.
+<img width="812" height="161" alt="display-students" src="https://github.com/user-attachments/assets/0efe98c4-6f5d-4fee-b3b6-1d6582ee68ff" />
 
-Suggested screenshots:
+<img width="343" height="282" alt="menu" src="https://github.com/user-attachments/assets/3c7589f8-e2fa-433c-8786-b07c86f06026" />
 
-* Main Menu
-* Student Table
-* Student Report
-* Search Result
-* Class Statistics
-* Merit List
+<img width="400" height="442" alt="statistics" src="https://github.com/user-attachments/assets/169121e8-6333-4cb9-8057-92f0cc2f5993" />
 
 ---
 
